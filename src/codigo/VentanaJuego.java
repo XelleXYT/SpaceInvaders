@@ -23,6 +23,8 @@ public class VentanaJuego extends javax.swing.JFrame {
     static int ALTOPANTALLA = 600;
 
     BufferedImage buffer = null;
+    
+    int contador = 0;
 
     //Bucle de animacion del juego
     //Nuevo hilo de ejecucion que se encarga de de refrescar la pantalla
@@ -52,7 +54,9 @@ public class VentanaJuego extends javax.swing.JFrame {
 	g2.fillRect(0, 0, ANCHOPANTALLA, ALTOPANTALLA);
 	////////////////////////////////////////////////////////////////////////
 	//Redibuja cada elemento en su nueva posicion
-
+	
+	contador ++;
+	System.out.println(contador);
 	////////////////////////////////////////////////////////////////////////
 	//Dibuja el buffer sobre el jPanel1
 	g2 = (Graphics2D) jPanel1.getGraphics();
