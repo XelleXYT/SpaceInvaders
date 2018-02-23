@@ -27,7 +27,8 @@ public class VentanaJuego extends javax.swing.JFrame {
 
     int contador = 0;
 
-    Nave miNave = new Nave();
+    Nave miNave = new Nave(ANCHOPANTALLA);
+    Disparo miDisparo = new Disparo(ALTOPANTALLA);
 
     //Bucle de animacion del juego
     //Nuevo hilo de ejecucion que se encarga de de refrescar la pantalla
@@ -48,7 +49,7 @@ public class VentanaJuego extends javax.swing.JFrame {
 	setSize(ANCHOPANTALLA, ALTOPANTALLA); //Asignamos Alto y Ancho
 	buffer = (BufferedImage) jPanel1.createImage(ANCHOPANTALLA, ALTOPANTALLA);
 	buffer.createGraphics();
-	miNave.x = ANCHOPANTALLA / 2 - miNave.imagen.getWidth(this) / 2;
+	miNave.x = ANCHOPANTALLA / 2 - miNave.imagen.getWidth(this) / 2 - 1;
 	miNave.y = ALTOPANTALLA - miNave.imagen.getHeight(this) - 35;
 
 	//Inicia el temporizador
@@ -65,6 +66,10 @@ public class VentanaJuego extends javax.swing.JFrame {
 	//System.out.println(contador);
 	////////////////////////////////////////////////////////////////////////
 	//Redibuja cada elemento en su nueva posicion
+	//Disparo
+	miDisparo.mueve();
+	g2.drawImage(miDisparo.imagen, miDisparo.getX(), miDisparo.getY(), null);
+	//Nave
 	miNave.muevete(); //Mueve la nave
 	g2.drawImage(miNave.imagen, miNave.x, miNave.y, null); //Pinta nave
 	////////////////////////////////////////////////////////////////////////
@@ -129,6 +134,10 @@ public class VentanaJuego extends javax.swing.JFrame {
 	    case KeyEvent.VK_RIGHT:
 	    case KeyEvent.VK_D:
 		miNave.setPulsadoDer(true);
+		break;
+	    case KeyEvent.VK_SPACE:
+		miDisparo.setDisparado(true);
+		miDisparo.posicionaDisparo(miNave);
 		break;
 	}
     }//GEN-LAST:event_formKeyPressed
