@@ -10,6 +10,7 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import javax.swing.Timer;
 
@@ -98,6 +99,22 @@ public class VentanaJuego extends javax.swing.JFrame {
 	}
     }
 
+    private void chequeaColision() {
+	Rectangle2D.Double hitBoxMarciano = new Rectangle2D.Double();
+	Rectangle2D.Double hitBoxDisparo = new Rectangle2D.Double();
+	hitBoxDisparo.setFrame(miDisparo.getX(), miDisparo.getY(), miDisparo.imagen.getWidth(null), miDisparo.imagen.getHeight(null));
+	for (int i = 0; i < filasMarcianos; i++) {
+	    for (int j = 0; j < columnasMarcianos; j++) {
+		hitBoxMarciano.setFrame(listaMarcianos[i][j].x, listaMarcianos[i][j].y, listaMarcianos[i][j].imagen.getWidth(null), listaMarcianos[i][j].imagen.getHeight(null));
+		if(hitBoxDisparo.intersects(hitBoxMarciano)){ //Si colisionan los objetos
+		    listaMarcianos[i][j].y = 1000;
+		    miDisparo.setY(2000);
+		    miDisparo.setDisparado(false);
+		}
+	    }
+	}
+    }
+
     private void bucleDelJuego() {
 	//Bucle de redibujado del buffer
 	Graphics2D g2 = (Graphics2D) buffer.getGraphics();
@@ -114,24 +131,11 @@ public class VentanaJuego extends javax.swing.JFrame {
 	//Nave
 	miNave.muevete(); //Mueve la nave
 	g2.drawImage(miNave.imagen, miNave.x, miNave.y, null); //Pinta nave
-	//Marciano
-//	if(contador < 50){
-//	    g2.drawImage(miMarciano.imagen, miMarciano.x, miMarciano.y, null);
-//	}else if(contador < 100){
-//	    g2.drawImage(miMarciano.imagen2, miMarciano.x, miMarciano.y, null);
-//	}else{
-//	    contador = 0;
-//	    g2.drawImage(miMarciano.imagen, miMarciano.x, miMarciano.y, null);
-//	}
-//	if(miMarciano.x == ANCHOPANTALLA - miMarciano.imagen.getWidth(null) || miMarciano.x == 0){
-//	    miMarciano.direccion = !miMarciano.direccion;
-//	    miMarciano.y += miMarciano.imagen.getHeight(null);
-//	}
-//	miMarciano.muevete();
 	//Matriz de marcianos
 	pintaMarcianos(g2);
-
 	////////////////////////////////////////////////////////////////////////
+	//Chequea colisiones
+	chequeaColision();
 	//Dibuja el buffer sobre el jPanel1
 	g2 = (Graphics2D) jPanel1.getGraphics();
 	g2.drawImage(buffer, 0, 0, null);
